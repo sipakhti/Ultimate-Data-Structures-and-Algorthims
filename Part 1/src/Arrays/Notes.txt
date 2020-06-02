@@ -1,0 +1,3 @@
+Use big "O" to describe the performance of an algorithm -> O(n)
+
+O(1) means constant time
