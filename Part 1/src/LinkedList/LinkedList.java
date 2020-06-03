@@ -166,6 +166,24 @@ public class LinkedList {
         return trailing.value;
     }
 
+    public void printMiddle(){
+        Node leading = first;
+        Node trailing = first;
+        int pass = 1;
+
+        while (!isLast(leading)){
+            for (int i = 0; i < pass; i++)
+                leading = leading.next;
+            if (leading == null) break;
+            trailing = trailing.next;
+            pass++;
+        }
+        if (leading == null)
+            System.out.println(trailing.value + " , " + trailing.next.value);
+        else
+            System.out.println(trailing.value);
+    }
+
 
     public void print(){
         Node currentNode = first;
@@ -189,7 +207,6 @@ public class LinkedList {
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
         list.print();
-        System.out.println(list.getKthFromTheEnd(0));
         list.addFirst(10);
         System.out.println(list.getKthFromTheEnd(1));
         list.addLast(199);
@@ -197,12 +214,13 @@ public class LinkedList {
         list.addFirst(29);
         list.addFirst(135956);
         list.addLast(999);
+//        list.addLast(25);
         System.out.println(Arrays.toString(list.toArray()));
         list.reverse();
         System.out.println(Arrays.toString(list.toArray()));
         list.reverse();
         System.out.println(Arrays.toString(list.toArray()));
-        System.out.println(list.getKthFromTheEnd(0));
+        list.printMiddle();
 //        System.out.println(list.indexOf(1234));
 //        System.out.println(list.contains(999));
 //        System.out.println(list.contains(500));
