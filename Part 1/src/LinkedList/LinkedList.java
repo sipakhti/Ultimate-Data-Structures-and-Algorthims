@@ -167,6 +167,8 @@ public class LinkedList {
     }
 
     public void printMiddle(){
+        if (isEmpty())
+            throw new IllegalStateException();
         Node leading = first;
         Node trailing = first;
         int pass = 1;
