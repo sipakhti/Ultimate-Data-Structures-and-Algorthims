@@ -1,22 +1,59 @@
 package LinkedList;
 
-import java.util.Arrays;
+import java.sql.ClientInfoStatus;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
+public class LinkedList<T> implements Iterable<T>{
 
-public class LinkedList {
-    private class Node {
-        private int value;
-        private Node next;
 
-        public Node(int value, Node node){
+    private class myIterator<T> implements Iterator<T>{
+
+        LinkedList<T>.Node<T> current;
+
+        public myIterator(LinkedList<T> list){
+            current = list.first;
+        }
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return current.next != null;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public T next() {
+            T item =  current.value;
+            current = current.next;
+            return  item;
+        }
+    }
+
+    private class Node<T> {
+        private T value;
+        private Node<T> next;
+
+        public Node(T value, Node<T> node){
             this.value = value;
             this.next = node;
         }
     }
 
-    private Node first;
-    private Node last;
+    private Node<T> first;
+    private Node<T> last;
 
     private int size;
 
@@ -24,16 +61,16 @@ public class LinkedList {
 
     }
 
-    public void addFirst(int val){
+    public void addFirst(T val){
 
-        first = new Node(val,first);
+        first = new Node<T>(val,first);
         if (isLast(first))
-            last = new Node(0,first);
+            last = new Node<>(null,first);
         size++;
 
     }
 
-    public void addLast(int val){
+    public void addLast(T val){
 //        Node currentNode = first;
 //        boolean isNull = false;
 //
@@ -56,7 +93,7 @@ public class LinkedList {
 
         if (isEmpty()) addFirst(val);
         else {
-            Node newNode = new Node(val,null);
+            Node<T> newNode = new Node<>(val,null);
             last.next.next = newNode; // last item
             last.next = newNode;
             size++;
@@ -67,7 +104,7 @@ public class LinkedList {
         if (isEmpty())
             throw new EmptyList();
 
-        Node tempNode = first.next;
+        Node<T> tempNode = first.next;
         first.next = null;
         first = tempNode;
         size--;
@@ -76,7 +113,7 @@ public class LinkedList {
     }
 
     public void deleteLast(){
-        Node currentNode = first;
+        Node<T> currentNode = first;
 
         if (isEmpty())
             throw new EmptyList();
@@ -98,20 +135,20 @@ public class LinkedList {
 
     }
 
-    public int indexOf(int val){
+    public int indexOf(T val){
         int index = 0;
-        Node currentNode = first;
+        Node<T> currentNode = first;
         if (isEmpty()) return -1;
 
         while(true){
-            if (currentNode.value == val) return index;
+            if ((currentNode.value) == val) return index;
             if (isLast(currentNode)) return -1;
             currentNode = currentNode.next;
             index++;
         }
     }
 
-    public boolean contains(int val){
+    public boolean contains(T val){
         return indexOf(val) != -1;
     }
 
@@ -119,10 +156,10 @@ public class LinkedList {
         return size;
     }
 
-    public int[] toArray(){
-        int[] items = new int[size];
+    public Object[] toArray(){
+        Object[] items = new Object[size];
         int index = 0;
-        Node currentNode = first;
+        Node<T> currentNode = first;
 
         while(index < size){
             items[index++] = currentNode.value;
@@ -135,10 +172,10 @@ public class LinkedList {
     public void reverse() {
         if (isEmpty()) return;
 
-        Node previous = first;
-        Node current = previous.next;
+        Node<T> previous = first;
+        Node<T> current = previous.next;
         while(current != null) {
-            var next = current.next;
+            Node<T> next = current.next;
             current.next = previous;
             previous = current;
             current = next;
@@ -149,12 +186,12 @@ public class LinkedList {
         first = previous;
     }
 
-    public int getKthFromTheEnd(int k){
+    public T getKthFromTheEnd(int k){
         if (k > size || k < 1)
             throw new IllegalArgumentException();
 
-        Node leading = first;
-        Node trailing = first;
+        Node<? extends T> leading = first;
+        Node<T> trailing = first;
         for (int i = 0; i < k; i++)
             leading = leading.next;
 
@@ -169,8 +206,8 @@ public class LinkedList {
     public void printMiddle(){
         if (isEmpty())
             throw new IllegalStateException();
-        Node leading = first;
-        Node trailing = first;
+        Node<? extends T> leading = first;
+        Node<T> trailing = first;
         int pass = 1;
 
         while (!isLast(leading)){
@@ -186,9 +223,16 @@ public class LinkedList {
             System.out.println(trailing.value);
     }
 
+    public T getFirst(){
+        return first.value;
+    }
+
+    public T getLast(){
+        return last.next.value;
+    }
 
     public void print(){
-        Node currentNode = first;
+        Node<T> currentNode = first;
 
         while(!isEmpty()){
             System.out.println(currentNode.value);
@@ -202,27 +246,41 @@ public class LinkedList {
         return first == null;
     }
 
-    private boolean isLast(Node node) {
+    private boolean isLast(Node<? extends T> node) {
         return node.next == null;
     }
 
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator iterator() {
+        return new myIterator<T>(this);
+    }
+
+
     public static void main(String[] args) {
-        LinkedList list = new LinkedList();
+        LinkedList<String> list = new LinkedList<String>();
         list.print();
-        list.addFirst(10);
+        list.addFirst("10");
         System.out.println(list.getKthFromTheEnd(1));
-        list.addLast(199);
-        list.addLast(100);
-        list.addFirst(29);
-        list.addFirst(135956);
-        list.addLast(999);
+        list.addLast("199");
+        list.addLast("100");
+        list.addFirst("29");
+        list.addFirst("135956");
+        list.addLast("999/n125/n654694");
+
+        LinkedList<Integer> integerLinkedList = new LinkedList<Integer>();
+
 //        list.addLast(25);
-        System.out.println(Arrays.toString(list.toArray()));
-        list.reverse();
-        System.out.println(Arrays.toString(list.toArray()));
-        list.reverse();
-        System.out.println(Arrays.toString(list.toArray()));
-        list.printMiddle();
+//        System.out.println(Arrays.toString(list.toArray()));
+//        list.reverse();
+//        System.out.println(Arrays.toString(list.toArray()));
+//        list.reverse();
+//        System.out.println(Arrays.toString(list.toArray()));
+//        list.printMiddle();
 //        System.out.println(list.indexOf(1234));
 //        System.out.println(list.contains(999));
 //        System.out.println(list.contains(500));
@@ -252,4 +310,5 @@ public class LinkedList {
 
 
     }
+
 }

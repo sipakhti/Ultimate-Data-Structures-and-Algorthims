@@ -3,6 +3,7 @@ package Queues;
 import Stacks.Stack;
 
 import java.util.ArrayDeque;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 
@@ -15,18 +16,27 @@ public class Main {
 //        System.out.println(queue);
 //        reverse(queue);
 //        System.out.println(queue);
+//
+//        ArrayQueue<Integer> arrayQueue = new ArrayQueue<>(5);
+//        arrayQueue.add(100);
+//        arrayQueue.add(200);
+//        arrayQueue.add(300);
+//        arrayQueue.add(400);
+//        arrayQueue.add(500);
+//        System.out.println(arrayQueue);
+//        System.out.println(arrayQueue.remove());
+//        System.out.println(arrayQueue.remove());
+//        System.out.println(arrayQueue);
+//        arrayQueue.add(600);
+//        System.out.println(arrayQueue);
+//        ArrayDeque<Integer> deque = new ArrayDeque<>();
 
-        ArrayQueue<Integer> arrayQueue = new ArrayQueue<>(3);
-        arrayQueue.add(100);
-        arrayQueue.add(200);
-        arrayQueue.add(300);
-        System.out.println(arrayQueue);
-        System.out.println(arrayQueue.remove());
-        System.out.println(arrayQueue);
-        arrayQueue.addFirst(500);
-        System.out.println(arrayQueue);
-
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        queue.add(1);
+        queue.add(2);
+        queue.add(3);
+        queue.add(4);
+        queue.add(5);
 
 
 
