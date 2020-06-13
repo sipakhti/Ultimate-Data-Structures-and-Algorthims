@@ -1,6 +1,5 @@
 package Queues;
 
-import java.awt.event.TextEvent;
 import java.util.Arrays;
 
 public class PriorityQueue {
@@ -14,21 +13,20 @@ public class PriorityQueue {
     public void enqueue(int item){
         if (isFull()) extendQueue();
 
+        items[shiftItemsToInsert(item)] = item;
+        count++;
+        }
 
-        for (int i = items.length-1; i >= 0 ; i--) {
+    private int shiftItemsToInsert(int item) {
+        int i;
+        for  (i = count-1; i >= 0 ; i--)
             if (items[i] > item)
                 items[i + 1] = items[i];
-            else if (items[i] <= item && items[i] != 0) {
-                items[i + 1] = item;
+            else
                 break;
-            }
-        }
-        if (isEmpty())
-            items[0] = item;
-
-        count++;
-
+        return i + 1;
     }
+
 
     public int dequeue(){
         if (isEmpty())
@@ -41,17 +39,17 @@ public class PriorityQueue {
         items = Arrays.copyOf(items, count*2);
     }
 
-    private boolean isFull() {
+    public boolean isFull() {
         return count == items.length;
     }
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return count == first;
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(items);
+        return Arrays.toString(Arrays.copyOfRange(items,first,count));
     }
 
     public static void main(String[] args) {
@@ -61,8 +59,10 @@ public class PriorityQueue {
         queue.enqueue(30);
         queue.enqueue(5);
         queue.enqueue(40);
+        queue.enqueue(15);
         System.out.println(queue);
         System.out.println(queue.dequeue());
         System.out.println(queue);
+        System.out.println(queue.dequeue());
     }
 }

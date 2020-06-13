@@ -25,7 +25,7 @@ public class LinkedList<T> implements Iterable<T>{
          */
         @Override
         public boolean hasNext() {
-            return current.next != null;
+            return current != null;
         }
 
         /**
