@@ -3,7 +3,12 @@ package Queues;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @version 1.0
+ * @author sipakhti
+ */
 public class LinkedListQueue {
+
     private class Node {
         private int value;
         private Node next;

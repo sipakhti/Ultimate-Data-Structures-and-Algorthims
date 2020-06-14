@@ -36,7 +36,7 @@ public class HashTable<K, V> {
         var entry = new Entry<K,V>(key,value);
         var index  = hash(key);
         LinkedList<Entry<K, V>> bucket = list[index];
-        if (bucket == null) {
+        if (isCurrentIndexNull((LinkedList<Entry<K, V>>) bucket)) {
             list[index] = new LinkedList<Entry<K, V>>();
             list[index].addLast(entry);
             return true;
@@ -53,10 +53,14 @@ public class HashTable<K, V> {
         return true;
     }
 
+    private boolean isCurrentIndexNull(LinkedList<Entry<K, V>> bucket) {
+        return bucket == null;
+    }
+
     public V get(K key){
         var index = hash(key);
         var bucket = list[index];
-        if (bucket == null)
+        if (isCurrentIndexNull(bucket))
             throw new IllegalArgumentException(String.format("'%d' is not a valid key or is not present",key));
 
         for (var entry : bucket)
@@ -69,11 +73,23 @@ public class HashTable<K, V> {
     public void remove(K key){
         var index = hash(key);
         var bucket = list[index];
-        if (bucket == null)
+        if (isCurrentIndexNull(bucket))
             throw new IllegalArgumentException(String.format("'%d' is not a valid key or is not present",key));
 
         list[index].deleteFirst();
 
+    }
+
+    public boolean isKeyPresent(K key){
+        var index = hash(key);
+        var bucket = list[index];
+        if (isCurrentIndexNull(bucket)) return false;
+
+        for (var entry : bucket)
+            if (entry.key == key)
+                return true;
+
+        return false;
     }
 
     private int hash(Object key){
